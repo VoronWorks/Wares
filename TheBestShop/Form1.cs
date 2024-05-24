@@ -323,18 +323,24 @@ namespace TheBestShop
                     ex.Visible = true; // Открытие Excel
 
                     // Очистить существующие серии диаграммы
-                    chart2.Series.Clear();
-
+                   chart2.Series.Clear();
+                    double sum = 0;
                     // Создать новую серию для диаграммы
                     var series = new Series();
                     series.ChartType = SeriesChartType.Pie;
+                    for (int i = 2; i < row; i++) // Начинаем с 2, так как первая строка - заголовки
+                    {
+                        var name = dataArray[i, 0];
+                        var amount2 = Convert.ToDouble(dataArray[i, 1]);
+                        sum += amount2;
+                    }
 
                     // Добавить точки в диаграмму на основе данных из массива dataArray
                     for (int i = 2; i < row; i++) // Начинаем с 2, так как первая строка - заголовки
                     {
                         var name = dataArray[i, 0];
                         var amount = Convert.ToDouble(dataArray[i, 1]);
-                        series.Points.AddXY(name.ToString()+", "+amount, amount);
+                        series.Points.AddXY(name.ToString()+", "+amount+" рублей, "+Math.Round(amount/sum,3)*100+"%", amount);
                     }
 
                     // Добавить серию в диаграмму
